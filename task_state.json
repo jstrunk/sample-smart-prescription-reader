@@ -1,0 +1,54 @@
+{
+  "task_id": "task-20250215-1930",
+  "task_description": "Address Dependabot security alerts across two repositories by updating vulnerable Python and Node.js dependencies",
+  "status": "in_progress",
+  "features": [
+    {
+      "id": "FEAT-001",
+      "type": "fix",
+      "description": "Update vulnerable Python dependencies in aws-smart-product-onboarding repository",
+      "status": "pending",
+      "steps": [
+        "Update urllib3 from ~1.26.7 to >=2.6.3 in packages/smart-product-onboarding/api/pyproject.toml (direct dependency)",
+        "Add cryptography>=46.0.5 constraint to packages/api/handlers/python/pyproject.toml (transitive via moto)",
+        "Add cryptography>=46.0.5 and Werkzeug>=3.1.5 constraints to packages/smart-product-onboarding/core-utils/pyproject.toml (transitive via moto)",
+        "Run 'poetry lock' in each affected package directory to regenerate lock files",
+        "Run 'poetry install' to verify dependencies resolve correctly",
+        "Run 'pnpm pdk build' from repository root to verify full build passes",
+        "Run tests using nx: 'pnpm exec nx run-many --target=test --all --outputStyle=stream'",
+        "Commit changes with message 'fix: update vulnerable Python dependencies (cryptography, urllib3, Werkzeug)'"
+      ],
+      "acceptance_criteria": [
+        "urllib3 version in lock files is >=2.6.3",
+        "cryptography version in lock files is >=46.0.5",
+        "Werkzeug version in lock files is >=3.1.5",
+        "All poetry.lock files are regenerated successfully",
+        "Build completes without errors",
+        "All existing tests pass"
+      ]
+    },
+    {
+      "id": "FEAT-002",
+      "type": "fix",
+      "description": "Update vulnerable Python and Node.js dependencies in sample-smart-prescription-reader repository",
+      "status": "pending",
+      "steps": [
+        "Add version constraints to packages/core/pyproject.toml for: cryptography>=46.0.5, Werkzeug>=3.1.5, urllib3>=2.6.3, requests>=2.32.4",
+        "Run 'uv lock --upgrade-package cryptography --upgrade-package werkzeug --upgrade-package urllib3 --upgrade-package requests' in packages/core to update lock file",
+        "Update pnpm.overrides in root package.json: change koa from ^2.16.1 to ^2.16.2",
+        "Add tmp override >=0.2.4 to pnpm.overrides in root package.json",
+        "Run 'pnpm install' from repository root to regenerate pnpm-lock.yaml",
+        "Run 'pnpm exec nx run-many --target=build --all --outputStyle=stream' to verify builds pass",
+        "Run 'pnpm exec nx run-many --target=test --all --outputStyle=stream' to verify tests pass",
+        "Commit changes with message 'fix: update vulnerable dependencies (cryptography, Werkzeug, urllib3, requests, koa, tmp)'"
+      ],
+      "acceptance_criteria": [
+        "Python uv.lock shows cryptography>=46.0.5, Werkzeug>=3.1.5, urllib3>=2.6.3, requests>=2.32.4",
+        "pnpm-lock.yaml shows koa>=2.16.2 and tmp>=0.2.4",
+        "All lock files are regenerated successfully",
+        "Build completes without errors for all packages",
+        "All existing tests pass"
+      ]
+    }
+  ]
+}
