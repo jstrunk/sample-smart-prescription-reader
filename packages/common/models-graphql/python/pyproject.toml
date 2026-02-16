@@ -2,7 +2,7 @@
 name = "graphql-python-connector"
 version = "1.0.0"
 description = "Generate pydantic models from the graphql schema"
-requires-python = ">=3.9,<4"
+requires-python = ">=3.10,<4"
 readme = 'README.md'
 dependencies = []
 
