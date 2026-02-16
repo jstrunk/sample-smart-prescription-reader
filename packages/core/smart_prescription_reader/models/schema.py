@@ -6,6 +6,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class JobStateEnum(str, Enum):
+    """No documentation"""
+
     TRANSCRIBE = "TRANSCRIBE"
     EXTRACT = "EXTRACT"
     JUDGE = "JUDGE"
@@ -13,6 +15,8 @@ class JobStateEnum(str, Enum):
 
 
 class JobStatusEnum(str, Enum):
+    """No documentation"""
+
     QUEUED = "QUEUED"
     PROCESSING = "PROCESSING"
     COMPLETED = "COMPLETED"
@@ -20,6 +24,8 @@ class JobStatusEnum(str, Enum):
 
 
 class ProcessPrescriptionInput(BaseModel):
+    """No documentation"""
+
     image: str
     prescription_schema: str = Field(alias="prescriptionSchema")
     temperature: Optional[float] = None
@@ -31,6 +37,8 @@ class ProcessPrescriptionInput(BaseModel):
 
 
 class RequestUploadFileInput(BaseModel):
+    """No documentation"""
+
     file_name: str = Field(alias="fileName")
     expiration: Optional[int] = None
 
@@ -78,27 +86,9 @@ class Query(BaseModel):
     get_job_status: PrescriptionJob = Field(alias="getJobStatus")
 
 
-class RequestUploadFileRequestuploadfile(BaseModel):
-    typename: Literal["PresignedUrlResponse"] = Field(
-        alias="__typename", default="PresignedUrlResponse"
-    )
-    url: str
-    object_key: Optional[str] = Field(default=None, alias="objectKey")
-
-
-class RequestUploadFile(BaseModel):
-    request_upload_file: RequestUploadFileRequestuploadfile = Field(
-        alias="requestUploadFile"
-    )
-
-    class Arguments(BaseModel):
-        input: RequestUploadFileInput
-
-    class Meta:
-        document = "mutation RequestUploadFile($input: RequestUploadFileInput!) {\n  requestUploadFile(input: $input) {\n    url\n    objectKey\n    __typename\n  }\n}"
-
-
 class ProcessPrescriptionProcessprescription(BaseModel):
+    """No documentation"""
+
     typename: Literal["PrescriptionJob"] = Field(
         alias="__typename", default="PrescriptionJob"
     )
@@ -109,24 +99,64 @@ class ProcessPrescriptionProcessprescription(BaseModel):
 
 
 class ProcessPrescription(BaseModel):
+    """No documentation found for this operation."""
+
     process_prescription: ProcessPrescriptionProcessprescription = Field(
         alias="processPrescription"
     )
 
     class Arguments(BaseModel):
+        """Arguments for ProcessPrescription"""
+
         input: ProcessPrescriptionInput
+        model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
+        """Meta class for ProcessPrescription"""
+
         document = "mutation ProcessPrescription($input: ProcessPrescriptionInput!) {\n  processPrescription(input: $input) {\n    createdAt\n    jobId\n    status\n    updatedAt\n    __typename\n  }\n}"
 
 
+class RequestUploadFileRequestuploadfile(BaseModel):
+    """No documentation"""
+
+    typename: Literal["PresignedUrlResponse"] = Field(
+        alias="__typename", default="PresignedUrlResponse"
+    )
+    url: str
+    object_key: Optional[str] = Field(default=None, alias="objectKey")
+
+
+class RequestUploadFile(BaseModel):
+    """No documentation found for this operation."""
+
+    request_upload_file: RequestUploadFileRequestuploadfile = Field(
+        alias="requestUploadFile"
+    )
+
+    class Arguments(BaseModel):
+        """Arguments for RequestUploadFile"""
+
+        input: RequestUploadFileInput
+        model_config = ConfigDict(populate_by_name=None)
+
+    class Meta:
+        """Meta class for RequestUploadFile"""
+
+        document = "mutation RequestUploadFile($input: RequestUploadFileInput!) {\n  requestUploadFile(input: $input) {\n    url\n    objectKey\n    __typename\n  }\n}"
+
+
 class GetJobStatusGetjobstatusError(BaseModel):
+    """No documentation"""
+
     typename: Literal["ErrorDetail"] = Field(alias="__typename", default="ErrorDetail")
     code: str
     message: str
 
 
 class GetJobStatusGetjobstatusUsage(BaseModel):
+    """No documentation"""
+
     typename: Literal["ModelUsage"] = Field(alias="__typename", default="ModelUsage")
     input_tokens: int = Field(alias="inputTokens")
     output_tokens: Optional[int] = Field(default=None, alias="outputTokens")
@@ -137,6 +167,8 @@ class GetJobStatusGetjobstatusUsage(BaseModel):
 
 
 class GetJobStatusGetjobstatus(BaseModel):
+    """No documentation"""
+
     typename: Literal["PrescriptionJob"] = Field(
         alias="__typename", default="PrescriptionJob"
     )
@@ -152,10 +184,17 @@ class GetJobStatusGetjobstatus(BaseModel):
 
 
 class GetJobStatus(BaseModel):
+    """No documentation found for this operation."""
+
     get_job_status: GetJobStatusGetjobstatus = Field(alias="getJobStatus")
 
     class Arguments(BaseModel):
+        """Arguments for GetJobStatus"""
+
         job_id: str = Field(alias="jobId")
+        model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
+        """Meta class for GetJobStatus"""
+
         document = "query GetJobStatus($jobId: String!) {\n  getJobStatus(jobId: $jobId) {\n    jobId\n    status\n    state\n    message\n    prescriptionData\n    score\n    updatedAt\n    error {\n      code\n      message\n      __typename\n    }\n    usage {\n      inputTokens\n      outputTokens\n      cacheReadInputTokens\n      task\n      __typename\n    }\n    __typename\n  }\n}"
